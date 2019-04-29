@@ -36,6 +36,7 @@ export default class Post extends Component {
                 <td>{ title }</td>
                 <td>
                     <Link to={`/post/${id}`} className="btn btn-primary">Read</Link>
+                    <Link to={`/edit/${id}`} className="btn btn-warning">Edit</Link>
                     <button 
                         className="btn btn-danger" 
                         onClick={ this.confirmDelete }

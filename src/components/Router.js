@@ -6,6 +6,8 @@ import Nav from './Nav/Nav';
 import Posts from './Posts';
 import SinglePost from './SinglePost';
 import Form from './Form';
+import Edit from './Edit';
+import Swal from 'sweetalert2';
 
 export default class Router extends Component {
 
@@ -48,12 +50,56 @@ export default class Router extends Component {
         axios.post(`https://jsonplaceholder.typicode.com/posts`, { post })
             .then(resp => {
                 if (resp.status === 201) {
+                    Swal.fire(
+                        'Post Created!',
+                        'A new Post has been created!',
+                        'success'
+                    );
+
                     let postID = { id: resp.data.id };
                     const newPost = Object.assign({}, resp.data.post, postID);
 
                     this.setState(prevState => ({
                         posts: [...prevState.posts, newPost]
                     })); 
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!'
+                    });
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
+    updatePost = currentPost => {
+        const { id } = currentPost;
+
+        axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, { currentPost })
+            .then(resp => {
+                console.log(resp);
+                if (resp.status === 200) {
+                    Swal.fire(
+                        'Post Updated!',
+                        'A Post has been updated!',
+                        'success'
+                    );
+
+                    let postID = resp.data.id;
+                    const posts = [...this.state.posts];
+
+                    const editPost = posts.findIndex(post => postID === post.id);
+
+                    posts[editPost] = currentPost;
+
+                    this.setState({ posts });
+                } else {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!'
+                    });
                 }
             })
             .catch(err => console.error(err));
@@ -97,6 +143,22 @@ export default class Router extends Component {
                                 />
                             )
                         } }/>
+                        <Route exact path="/edit/:id" render={ props => {
+                            const id = props.location.pathname.replace('/edit/', '');
+                            const posts = this.state.posts;
+                            let filter;
+
+                            filter = posts.filter(post => (
+                                post.id === Number(id)
+                            ));
+
+                            return (
+                                <Edit
+                                    post={ filter[0] }
+                                    updatePost={ this.updatePost }
+                                />
+                            )
+                        } } />
                     </Switch>
                 </div>
             </div>
