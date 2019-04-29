@@ -11,7 +11,12 @@ export default class Post extends Component {
             <td>{ title }</td>
             <td>
                 <Link to={`/post/${id}`} className="btn btn-primary">Read</Link>
-                <button className="btn btn-danger">Delete</button>
+                <button 
+                    className="btn btn-danger" 
+                    onClick={() => this.props.deletePost(id)}
+                    >
+                    Delete
+                </button>
             </td>
         </tr>
         )

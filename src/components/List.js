@@ -14,6 +14,7 @@ export default class List extends Component {
                     <Post
                         key={ post }
                         data={ this.props.posts[post] }
+                        deletePost={ this.props.deletePost }
                     />
                 )) }
             </React.Fragment>

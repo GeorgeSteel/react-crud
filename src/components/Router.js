@@ -26,6 +26,23 @@ export default class Router extends Component {
              .catch(err => console.error(err));
     }
 
+    deletePost = id => {
+        axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+             .then(resp => {
+                 if (resp.status === 200) {
+                     const posts = [...this.state.posts];
+                     let result = posts.filter(post => (
+                         post.id !== id
+                     ));
+
+                     this.setState({
+                         posts: result
+                     });                     
+                 }
+             })
+             .catch(err => console.error(err));
+    }
+
     render() {
         return (
         <BrowserRouter>
@@ -38,6 +55,7 @@ export default class Router extends Component {
                             return(
                                 <Posts
                                     posts={ this.state.posts }
+                                    deletePost={this.deletePost}
                                 />
                             )
                         } }/>

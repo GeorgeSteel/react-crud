@@ -8,6 +8,7 @@ export default class Posts extends Component {
         <h2 className="text-center">Posts</h2>
         <List
             posts={ this.props.posts }
+            deletePost={  this.props.deletePost }
         />
       </div>
     )
