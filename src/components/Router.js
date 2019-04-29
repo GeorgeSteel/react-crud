@@ -44,6 +44,21 @@ export default class Router extends Component {
              .catch(err => console.error(err));
     }
 
+    createPost = post => {
+        axios.post(`https://jsonplaceholder.typicode.com/posts`, { post })
+            .then(resp => {
+                if (resp.status === 201) {
+                    let postID = { id: resp.data.id };
+                    const newPost = Object.assign({}, resp.data.post, postID);
+
+                    this.setState(prevState => ({
+                        posts: [...prevState.posts, newPost]
+                    })); 
+                }
+            })
+            .catch(err => console.error(err));
+    }
+
     render() {
         return (
         <BrowserRouter>
@@ -75,7 +90,13 @@ export default class Router extends Component {
                                 />
                             )
                         } } />
-                        <Route exact path="/create" component={Form}/>
+                        <Route exact path="/create" render={ () => {
+                            return(
+                                <Form
+                                    createPost={ this.createPost }
+                                />
+                            )
+                        } }/>
                     </Switch>
                 </div>
             </div>
