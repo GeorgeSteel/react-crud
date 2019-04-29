@@ -5,6 +5,7 @@ import Header from './Header';
 import Nav from './Nav/Nav';
 import Posts from './Posts';
 import SinglePost from './SinglePost';
+import Form from './Form';
 
 export default class Router extends Component {
 
@@ -74,6 +75,7 @@ export default class Router extends Component {
                                 />
                             )
                         } } />
+                        <Route exact path="/create" component={Form}/>
                     </Switch>
                 </div>
             </div>
